@@ -185,7 +185,7 @@ module.exports = configure(function (ctx) {
       manifest: {
         name: `Furry Grid`,
         short_name: `Furry Grid`,
-        description: `The Furry Grid project that you can make your own furry cereer.`,
+        description: `The Furry Preference Grid (FPG) project that you can make your own furry profile who you like..`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

@@ -1,7 +1,7 @@
 {
   "name": "furrygrid",
-  "version": "0.7.3",
-  "description": "The Furry Grid project that you can make your own furry profile who you like.",
+  "version": "0.7.4",
+  "description": "The Furry Preference Grid (FPG) project that you can make your own furry profile who you like.",
   "productName": "Furry Grid",
   "author": "Rominwolf",
   "private": true,

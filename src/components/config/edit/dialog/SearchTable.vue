@@ -5,7 +5,8 @@
            row-key="name" :filter="search" hide-header :pagination="pagination">
 
     <template v-if="tableSearch" v-slot:top-right>
-      <q-input filled dense debounce="300" v-model="search" :placeholder="$t('Search')">
+      <q-input filled dense debounce="300" :placeholder="$t('Search')"
+               v-model="search" :model-value="search">
         <template v-slot:append>
           <q-icon name="search"/>
         </template>
