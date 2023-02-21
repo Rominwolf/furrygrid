@@ -45,6 +45,12 @@
              @click="exportImage"/>
     </div>
 
+    <div class="q-pa-md">
+      <q-banner dense rounded class="bg-grey-3 text-caption text-grey-7">
+        {{ $t("TipInfoReview") }}
+      </q-banner>
+    </div>
+
     <q-inner-loading :showing="loading">
       <q-spinner-oval size="50px" color="primary"/>
     </q-inner-loading>

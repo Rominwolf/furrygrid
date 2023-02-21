@@ -1,6 +1,6 @@
 <template>
-  <div class="flex q-pt-xl items-center q-gutter-x-sm">
-    <div class="flex flex-1 column q-col-gutter-y-xs">
+  <div class="row q-pt-xl">
+    <div class="col-6 column q-col-gutter-y-xs">
       <a class="text-grey-9">
         Made with
         <q-icon name="favorite" size="xs" color="red"></q-icon>
@@ -15,11 +15,14 @@
       </div>
     </div>
 
-    <div class="flex column items-end text-right" style="width: 40%">
-      <a class="text-h7">https://lab.wsm.ink/furrygrid</a>
-      <a>{{ $t("FooterAdTitle") }}</a>
+    <div v-if="tableData.footerShowLink"
+         class="col-5 flex-right row justify-end items-center q-gutter-x-sm">
+      <div class="col-8 column text-right">
+        <a class="text-h7">https://lab.wsm.ink/furrygrid</a>
+        <a class="text-subtitle2">{{ $t("FooterAdTitle") }}</a>
+      </div>
+      <q-img src="qrcode.svg" height="100px" width="100px" loading="eager" class="col-4"></q-img>
     </div>
-    <q-img src="qrcode.svg" height="100px" width="100px" loading="eager"></q-img>
   </div>
 </template>
 
@@ -29,6 +32,7 @@ export default {
 
   data() {
     return {
+      tableData: this.$gridsData.data.value[":TableData"],
       productName: null,
       version: null
     }

@@ -147,7 +147,7 @@ export default {
 
   LicenseFairUse: "合理使用",
   LicenseGridStatement: "权利声明：",
-  LicenseGridStart: "本表格所展示的所有数据（包括但不限于画作，游戏和影视封面）的版权归原始权利人所有，我仅在",
+  LicenseGridStart: "本表格所展示的所有数据（包括但不限于画作，游戏和影视封面）的版权归原始权利人所有，我（填表人）仅在",
   LicenseGridEnd: "的前提下发布它们。",
 
   ImageDurability: "图片持久化",
@@ -159,4 +159,14 @@ export default {
 
   QaS: "问题和建议",
   QaSSubtitle: "任何问题、建议和意见都请前往 Github 发表 issue. :)",
+
+  FooterShowLink: "右下角的二维码和推广链接",
+  Show: "显示",
+  Hide: "隐藏",
+  TipInfoReview: "部分社交网站（如新浪微博）会审查发送的图片内容，" +
+    "如果遇到发表文章后被平台屏蔽的问题，请尝试可以在「编辑：表」选项卡里隐藏右下角的二维码和推广链接。",
+
+  SeparateGridsData: "分离格子数据（根据不同语言）",
+  Yes: "是",
+  No: "否"
 }

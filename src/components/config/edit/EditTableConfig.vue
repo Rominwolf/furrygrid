@@ -14,20 +14,31 @@
     <q-select disable filled dense options-dense map-options emit-value :label="$t('Mode')"
               v-model="tableData.mode" :options="modeOption" :model-value="tableData.mode"/>
 
-    <div v-if="tableData.customize">
+    <div v-if="tableData.customize" class="q-col-gutter-y-sm">
       <q-select filled dense options-dense map-options emit-value :label="$t('ClassTitleStyle')"
-                v-model="tableData.classTitleStyle" :options="classTitleStylesOption"
-                :model-value="tableData.classTitleStyle"/>
+                :options="classTitleStylesOption"
+                v-model="tableData.classTitleStyle" :model-value="tableData.classTitleStyle"/>
+
+      <q-select filled dense options-dense map-options emit-value :label="$t('FooterShowLink')"
+                :options="footerShowLinkOption"
+                v-model="tableData.footerShowLink" :model-value="tableData.footerShowLink"/>
+
+      <q-select filled dense options-dense map-options emit-value :label="$t('SeparateGridsData')"
+                :options="separateGridsDataOption"
+                v-model="separateGridsData" :model-value="separateGridsData"/>
     </div>
   </div>
 </template>
 
 <script>
 
+import {LocalStorage} from "quasar";
+
 export default {
   name: "EditTableConfig",
   data() {
     return {
+      separateGridsData: LocalStorage.getItem("separateGridsData") ?? false,
       tableData: this.$gridsData.data.value[":TableData"],
     }
   },
@@ -45,7 +56,26 @@ export default {
         {label: this.$t("FillMode"), value: 1},
       ]
     },
+    footerShowLinkOption() {
+      return [
+        {label: this.$t("Show"), value: true},
+        {label: this.$t("Hide"), value: false},
+      ]
+    },
+    separateGridsDataOption() {
+      return [
+        {label: this.$t("Yes"), value: true},
+        {label: this.$t("No"), value: false},
+      ]
+    },
   },
+
+  watch: {
+    async separateGridsData(newV) {
+      await LocalStorage.set("separateGridsData", newV);
+      await this.$gridsData.database.databaseRefresh();
+    }
+  }
 }
 </script>
 

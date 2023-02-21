@@ -1,6 +1,5 @@
 import {boot} from 'quasar/wrappers'
 import {Notify, scroll, useMeta} from "quasar";
-import {useI18n} from "vue-i18n";
 
 export default boot(({app}) => {
   const createNotify = function (text, type = "positive", icon = null, position = "top") {
@@ -62,8 +61,7 @@ export default boot(({app}) => {
   }
 
   const getLanguage = () => {
-    const {locale} = useI18n({useScope: "global"});
-    return locale.value;
+    return app.config.globalProperties.$i18n.locale;
   }
 
   const updateMeta = (meta) => {

@@ -1,6 +1,6 @@
 # Furry Grid (furrygrid)
 
-The Furry Grid project that you can make your own furry cereer.
+The Furry Preference Grid (FPG) project that you can make your own furry profile who you like.
 
 ## Install the dependencies
 

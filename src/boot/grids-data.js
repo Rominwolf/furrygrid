@@ -1,8 +1,10 @@
 import {boot} from 'quasar/wrappers'
 import {ref, toRaw} from "vue";
 import localforage from "localforage";
+import {LocalStorage} from "quasar";
 
 export default boot(async ({app}) => {
+  let data = {};
 
   /*
     || --------------- 模板数据 --------------- ||
@@ -40,6 +42,7 @@ export default boot(async ({app}) => {
     owner: "",
     mode: "basic",
     classTitleStyle: 0,
+    footerShowLink: true,
   }
 
   /**
@@ -182,11 +185,45 @@ export default boot(async ({app}) => {
    * 数据库相关
    */
   const database = {
-    databaseGrids: localforage.createInstance({
+    templateDatabaseInfo: {
       name: "database",
       version: 1.0,
-      storeName: "grids",
-    }),
+      storeName: `grids`,
+    },
+
+    databaseGrids: null,
+
+    /**
+     * 初始化数据库
+     */
+    init() {
+      this.databaseRefresh(false);
+    },
+
+    /**
+     * 刷新数据库到指定语言版本
+     */
+    async databaseRefresh(asRefresh = true) {
+      let language = app.config.globalProperties.$smart.getLanguage();
+      let separate = LocalStorage.getItem("separateGridsData") ?? false;
+
+      let databaseInfo = database.templateDatabaseInfo;
+
+      //如果分离数据：
+      if (separate) databaseInfo["storeName"] = `${language}_grids`;
+      else databaseInfo["storeName"] = `grids`;
+
+      this.databaseGrids = localforage.createInstance(databaseInfo);
+
+      //如果为手动刷新：
+      if (asRefresh) {
+        app.config.globalProperties.$gridsData.removeAllGridsData()
+      }
+
+      init.start();
+
+      database.databaseLoadingGridsData();
+    },
 
     /**
      * 更新数据库的格子动态数据
@@ -197,7 +234,6 @@ export default boot(async ({app}) => {
       return this.databaseGrids.setItem(key, value).then(function () {
         return true;
       }).catch(function (err) {
-        // 当出错时，此处代码运行
         console.error(err);
         return false;
       });
@@ -264,49 +300,53 @@ export default boot(async ({app}) => {
     }
   }
 
-  let data = {};
+  /**
+   * 初始化
+   */
+  const init = {
+    start() {
+      this.initTableData();
+      this.initGridsData();
+    },
+    initGridsData() {
+      let mixinGridsTemplates = [].concat(gridsBasicDataTemplate);
 
-  //初始化 data
-  function initGridsData() {
-    let mixinGridsTemplates = [].concat(gridsBasicDataTemplate);
+      //遍历 classesGrids
+      mixinGridsTemplates.forEach(mixinGridsTemplate => {
+        let gridsTemplate = mixinGridsTemplate.items;
 
-    //遍历 classesGrids
-    mixinGridsTemplates.forEach(mixinGridsTemplate => {
-      let gridsTemplate = mixinGridsTemplate.items;
+        //遍历 grids
+        gridsTemplate.forEach(gridTemplate => {
+          let title = gridTemplate.title;
 
-      //遍历 grids
-      gridsTemplate.forEach(gridTemplate => {
-        let title = gridTemplate.title;
+          //如果该 gridKey 已存在于 data 则跳过
+          if (title in data) return;
 
-        //如果该 gridKey 已存在于 data 则跳过
-        if (title in data) return;
-
-        //否则添加 gridKey
-        data[title] = {};
+          //否则添加 gridKey
+          data[title] = {};
+        })
       })
-    })
+    },
+    initTableData() {
+      let field = ":TableData";
+
+      //如果表数据不存在则添加并返回
+      if (!(field in data)) {
+        data[field] = tableDataTemplate;
+        return;
+      }
+
+      //否则尝试并集
+      Object.keys(tableDataTemplate).forEach(key => {
+        if (key in data[field]) return;
+
+        data[field][key] = tableDataTemplate[key];
+      });
+    },
   }
 
-  function initTableData() {
-    let field = ":TableData";
-
-    //如果表数据不存在则添加并返回
-    if (!(field in data)) {
-      data[field] = tableDataTemplate;
-      return;
-    }
-
-    //否则尝试并集
-    Object.keys(tableDataTemplate).forEach(key => {
-      if (key in data[field]) return;
-
-      data[field][key] = tableDataTemplate[key];
-    });
-  }
-
-  initGridsData();
-  initTableData();
-  database.databaseLoadingGridsData();
+  init.start();
+  database.init();
 
   app.config.globalProperties.$gridsData = {
     data: ref(data),
@@ -346,6 +386,15 @@ export default boot(async ({app}) => {
 
       data[gridKey] = gridData;
       this.setData(data);
+    },
+
+    /**
+     * 删除所有格子的数据
+     */
+    removeAllGridsData() {
+      Object.keys(this.data.value).forEach(key => {
+        this.removeGridDataAsKey(key);
+      })
     }
   }
 

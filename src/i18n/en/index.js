@@ -150,7 +150,7 @@ export default {
   LicenseGridStatement: "License Statement:",
   LicenseGridStart: "The copyright of all of data (including but not limited to arts, " +
     "cover of games and movies) belongs to the original owner. " +
-    "I am only release them under the premise of",
+    "I (filler) am only release them under the premise of",
   LicenseGridEnd: ".",
 
   ImageDurability: "Image Persistent",
@@ -162,4 +162,14 @@ export default {
 
   QaS: "Issues & Suggestions",
   QaSSubtitle: "For issues and suggestions, please go to Github and post an issue. :)",
+
+  FooterShowLink: "QR code and link in the bottom-right",
+  Show: "Show",
+  Hide: "Hide",
+  TipInfoReview: "Some social platforms will review the images information, " +
+    "please disabled QR code and link in the bottom-right on \"Edit: Table\".",
+
+  SeparateGridsData: "Separate The Grids Data (From Languages)",
+  Yes: "Yes",
+  No: "No"
 }

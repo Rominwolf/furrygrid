@@ -28,7 +28,8 @@ export default {
 
   methods: {
     changedLanguage(value) {
-      this.$smart.updateMetaTitle()
+      this.$gridsData.database.databaseRefresh();
+      this.$smart.updateMetaTitle();
       LocalStorage.set("language", value);
     }
   }
