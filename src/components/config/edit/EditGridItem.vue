@@ -23,6 +23,13 @@
       </div>
 
       <div class="col-8 q-gutter-y-sm">
+        <q-select filled dense options-dense map-options emit-value :label="$t('Prop')"
+                  :options="propOption"
+                  v-model="gridData.prop" :model-value="gridData.prop">
+          <template v-slot:append>
+            <q-icon name="close" @click.stop.prevent="gridData.prop = undefined" class="cursor-pointer"/>
+          </template>
+        </q-select>
         <q-input filled dense :label="$t(gridTemplate.subTitleTitle)"
                  class="col-grow"
                  v-model="gridData[fieldSubtitleContent]"
@@ -71,6 +78,18 @@ export default {
       dialogSearch: false,
       chooseGrid: null
     }
+  },
+
+  computed: {
+    propOption() {
+      return [
+        {label: this.$t("TooMany"), value: "tooMany"},
+        {label: this.$t("None"), value: "none"},
+        {label: this.$t("Forgot"), value: "forgot"},
+        {label: this.$t("HardChoose"), value: "hardChoose"},
+        {label: this.$t("Secret"), value: "secret"},
+      ]
+    },
   },
 
   methods: {

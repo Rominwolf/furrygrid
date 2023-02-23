@@ -15,7 +15,13 @@
           <div v-if="gridData.image === undefined"
                class="full-height full-width column justify-center content-center bg-grey-3 text-grey-9">
             <q-icon name="question_mark" size="xl" class="self-center"/>
-            <div class="text-subtitle2">{{ $t("NotChoose") }}</div>
+            <div class="text-subtitle2 text-center">{{ $t("NotChoose") }}</div>
+          </div>
+
+          <div v-if="gridData.prop !== undefined"
+               class="full-height full-width column justify-center content-center bg-secondary text-white">
+            <q-icon :name="prop('icon')" size="xl" class="self-center"/>
+            <div class="text-subtitle2 text-center">{{ $t(prop("text")) }}</div>
           </div>
 
         </template>
@@ -71,11 +77,6 @@ export default {
       return this.$t(titleId).split("/")[index];
     },
 
-    titleTrim() {
-      let titleId = this.gridTemplate.title;
-      return $t(titleId).replaceAll('/', '');
-    },
-
     analyzeContent(type, item) {
       let result = "";
 
@@ -91,11 +92,35 @@ export default {
      * @param size 文字类型（md, sm）
      */
     letterSpacing(content, size) {
-      let maxLength = 19;
-      if (size === "md") maxLength = 13;
+      let maxLength = 20;
+      if (size === "md") maxLength = 17;
 
       let length = this.$smart.getLength(content);
       return length >= maxLength ? " systolic-letter-spacing" : "";
+    },
+
+    prop(type) {
+      let prop = this.gridData.prop;
+
+      if (type === "text") {
+        let classify = require("underscore.string/classify");
+        return classify(prop);
+      }
+
+      if (type === "icon") {
+        switch (prop) {
+          case "none":
+            return "check_box_outline_blank";
+          case "tooMany":
+            return "hive";
+          case "forgot":
+            return "psychology_alt";
+          case "hardChoose":
+            return "quiz";
+          case "secret":
+            return "vpn_key";
+        }
+      }
     }
   },
 }

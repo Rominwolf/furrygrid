@@ -40,7 +40,8 @@ module.exports = configure(function (ctx) {
       'furry-games-index',
       'douban',
       'imdb',
-      'grids-data'
+      'grids-template',
+      'grids-data',
     ],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css

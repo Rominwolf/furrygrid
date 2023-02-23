@@ -1,7 +1,8 @@
 <template>
-  <q-scroll-area class="main-page-scroll">
+  <q-scroll-area ref="mainPageScroll" class="main-page-scroll"
+                 @mousedown="onMouseDown" @mousemove="onMouseMove" @mouseup="onMouseUp">
     <div class="flex justify-center">
-      <q-page id="mainPage" class="q-pa-xl main-page cursor-default">
+      <q-page id="mainPage" class="q-pa-xl main-page">
         <HeaderComp></HeaderComp>
         <GridsComp></GridsComp>
         <FooterComp></FooterComp>
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue';
+import {defineComponent, ref} from 'vue';
 
 import HeaderComp from "components/grid/HeaderComp";
 import GridsComp from "components/grid/GridsComp";
@@ -34,6 +35,46 @@ import LanguageSwitcher from "components/LanguageSwitcher";
 export default defineComponent({
   name: 'IndexPage',
   components: {LanguageSwitcher, FooterComp, GridsComp, HeaderComp},
+
+  setup() {
+    const mainPageScroll = ref(null);
+
+    return {
+      mainPageScroll
+    }
+  },
+
+  data() {
+    return {
+      isMouseDown: false,
+      y: 0,
+    }
+  },
+
+  methods: {
+    onMouseDown(event) {
+      this.isMouseDown = true;
+      this.y = event.y;
+      document.querySelector(".main-page-scroll").style.cursor = 'grabbing';
+    },
+    onMouseMove(event) {
+      if (this.isMouseDown) {
+        let adding = 15;
+
+        //如果鼠标下移则变成位置减少
+        if (event.y > this.y) adding = -adding;
+
+        let scrollPosition = this.mainPageScroll.getScrollPosition();
+
+        this.mainPageScroll.setScrollPosition("vertical", scrollPosition.top + adding, 0);
+      }
+    },
+    onMouseUp(event) {
+      this.isMouseDown = false;
+      this.y = event.y;
+      document.querySelector(".main-page-scroll").style.cursor = 'grab';
+    }
+  }
 })
 </script>
 
@@ -47,6 +88,8 @@ export default defineComponent({
   background-color: #F6F6F6;
   width: 100%;
   height: 100vh;
+  user-select: none;
+  cursor: grab;
 }
 
 .language-corner {

@@ -47,6 +47,11 @@ body {
   width: 4%;
 }
 
+.row > .col-96-percent {
+  height: auto;
+  width: 96%;
+}
+
 .blur-20 {
   $blur: 20px;
   filter: blur($blur);
@@ -103,7 +108,7 @@ body {
 }
 
 .systolic-letter-spacing {
-  letter-spacing: -1px;
+  letter-spacing: -.5px;
 }
 
 .systolic-line-height {

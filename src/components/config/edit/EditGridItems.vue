@@ -48,7 +48,8 @@ export default {
   components: {EditGridItem},
   data() {
     return {
-      gridsTemplate: this.$gridsData.template.basic,
+      tableData: this.$gridsData.data.value[":TableData"],
+      gridsTemplate: ref(this.$gridsTemplates.data),
       gridsData: ref(this.$gridsData.data),
       dialogSearch: false,
       chooseGrid: null

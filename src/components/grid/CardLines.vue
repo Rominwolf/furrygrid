@@ -1,5 +1,6 @@
 <template>
-  <div class="absolute-bottom text-center q-gutter-x-xs z-top"
+  <div v-if="gridData.prop === undefined"
+       class="absolute-bottom text-center q-gutter-x-xs z-top"
        style="padding-top: 4px; padding-bottom: 4px;">
 
     <!-- 副标题（第二行）-->

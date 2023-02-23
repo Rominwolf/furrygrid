@@ -1,74 +1,55 @@
 <template>
-  <div class="q-col-gutter-y-md">
+  <div class="q-col-gutter-y-lg">
     <div v-for="(classInner, classIndex) in gridsTemplate" :key="classIndex"
          :id="`gridClass${classIndex}`"
          class="row">
 
-      <div v-if="classTitleStyle === 0"
-           class="flex justify-start items-start col-4-percent text-h7 text-primary">
-        <a class="grid-class-title text-weight-bold text-uppercase">
-          {{ classTitleTranslated(classInner.info.name) }}
-        </a>
-        <q-separator vertical size="4px" color="primary" style="height: 25%"></q-separator>
+      <div class="col-4-percent">
+        <GridCardClassTitle :class-inner="classInner"></GridCardClassTitle>
       </div>
 
-      <div v-if="classTitleStyle === 1"
-           class="flex justify-start items-start col-4-percent text-h7 text-white">
-        <div class="q-px-xs q-pt-sm q-pb-md bg-primary">
-          <a class="grid-class-title text-weight-bold text-uppercase">
-            {{ classTitleTranslated(classInner.info.name) }}
-          </a>
-        </div>
-      </div>
-
-      <GridCard v-for="(item, index) in classInner.items" :key="index"
-                :grid="
+      <div class="col-96-percent row q-col-gutter-sm">
+        <GridCard v-for="(item, index) in classInner.items" :key="index"
+                  :grid="
                 {data: gridsData[item.title], template: item, classIndex: classIndex, itemIndex: index}"
-                class="col-19-dot-2-percent q-px-sm"/>
+                  class="col-20-percent"/>
+      </div>
 
     </div>
   </div>
 </template>
 
 <script>
-import {capitalize, ref} from 'vue'
+import {ref} from 'vue'
 import GridCard from "components/grid/GridCard";
+import GridCardClassTitle from "components/grid/GridCardClassTitle";
 
 export default {
   name: "GridsComp",
-  components: {GridCard},
+  components: {GridCardClassTitle, GridCard},
 
   data() {
     return {
       tableData: this.$gridsData.data.value[":TableData"],
-      gridsTemplate: this.$gridsData.template.basic,
+      gridsTemplate: ref(this.$gridsTemplates.data),
       gridsData: ref(this.$gridsData.data)
     }
   },
 
-  computed: {
-    classTitleStyle() {
-      let style = this.tableData.classTitleStyle;
-      return style === undefined ? 0 : style;
-    },
-  },
-
   watch: {
     gridsData: {
-      async handler(oldValue, newValue) {
+      async handler() {
         await this.$gridsData.database.databaseGridsPutAll();
       },
       deep: true
-    }
-  },
+    },
 
-  methods: {
-    /**
-     * 类标题翻译
-     * @param name 类 ID
-     */
-    classTitleTranslated(name) {
-      return this.$t("GridClassTitle_" + capitalize(name));
+    tableData: {
+      handler(newValue, oldValue) {
+        let mode = newValue.mode;
+        this.$gridsTemplates.refreshTemplate(mode);
+      },
+      deep: true
     },
   },
 
@@ -76,8 +57,5 @@ export default {
 </script>
 
 <style scoped>
-.grid-class-title {
-  writing-mode: vertical-lr;
-  letter-spacing: 0.1rem;
-}
+
 </style>

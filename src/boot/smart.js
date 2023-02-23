@@ -2,6 +2,13 @@ import {boot} from 'quasar/wrappers'
 import {Notify, scroll, useMeta} from "quasar";
 
 export default boot(({app}) => {
+  /**
+   * 创建一个通知窗口
+   * @param text 内容
+   * @param type 类型
+   * @param icon 图标
+   * @param position 位置
+   */
   const createNotify = function (text, type = "positive", icon = null, position = "top") {
     Notify.create({
       message: text,
@@ -11,6 +18,12 @@ export default boot(({app}) => {
     });
   }
 
+  /**
+   * 滚动到指定元素
+   * @param element DOM
+   * @param includeOffset 附加偏移量
+   * @param duration 所需时间
+   */
   const scrollToElement = (element, includeOffset = 0, duration = 250) =>
     new Promise((resolve, reject) => {
       let {getScrollTarget, setVerticalScrollPosition} = scroll;
@@ -28,6 +41,11 @@ export default boot(({app}) => {
       }, duration);
     })
 
+  /**
+   * 为指定元素添加动画
+   * @param element DOM
+   * @param animationClasses 添加的动画 class
+   */
   const animateDOM = (element, ...animationClasses) =>
     new Promise((resolve, reject) => {
       let node = document.querySelector(element);
@@ -44,6 +62,10 @@ export default boot(({app}) => {
       node.addEventListener('animationend', handleAnimationEnd, {once: true});
     });
 
+  /**
+   * 文件转 B64
+   * @param file 文件
+   */
   const fileToBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -52,6 +74,11 @@ export default boot(({app}) => {
       reader.onerror = error => reject(error);
     });
 
+  /**
+   * 字符串长度（中文2字符）
+   * @param str 字符串
+   * @return {number} 长度
+   */
   const getLength = (str) => {
     let count = 0;
     for (let i = 0, len = str.length; i < len; i++) {
@@ -60,14 +87,23 @@ export default boot(({app}) => {
     return count;
   }
 
+  /**
+   * 获取当前所用语言
+   */
   const getLanguage = () => {
     return app.config.globalProperties.$i18n.locale;
   }
 
+  /**
+   * 更新网站的 Meta 数据
+   */
   const updateMeta = (meta) => {
     useMeta(meta)
   }
 
+  /**
+   * 更新网站的标题
+   */
   const updateMetaTitle = () => {
     let productName = process.env.PACKAGE.productName;
     let name = app.config.globalProperties.$t("GridHeaderTitle").replaceAll("/", "");

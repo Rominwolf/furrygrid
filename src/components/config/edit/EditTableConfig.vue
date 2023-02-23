@@ -11,7 +11,7 @@
              v-model="tableData.owner" :model-value="tableData.owner"
              class="col-grow"/>
 
-    <q-select disable filled dense options-dense map-options emit-value :label="$t('Mode')"
+    <q-select filled dense options-dense map-options emit-value :label="$t('Mode')"
               v-model="tableData.mode" :options="modeOption" :model-value="tableData.mode"/>
 
     <div v-if="tableData.customize" class="q-col-gutter-y-sm">
